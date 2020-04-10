@@ -4,6 +4,7 @@ $finder = PhpCsFixer\Finder::create()
     ->exclude('vendor')
     ->exclude('tests/_support/_generated')
     ->exclude('var')
+    ->exclude('src/Migrations')
     ->in(__DIR__)
 ;
 
