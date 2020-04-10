@@ -1,0 +1,50 @@
+parameters:
+  testsuites:
+    ci:
+      tasks:
+        - phpcsfixer2
+        - codeception
+        - securitychecker
+        - phpstan
+        - phplint
+        - phpversion
+    git_commit_msg:
+      tasks:
+        - git_commit_message
+    git_pre_commit:
+      tasks:
+        - php_cs_auto_fixerv2
+        - phplint
+  tasks:
+    codeception: ~
+    securitychecker:
+      metadata:
+        blocking: false
+    phpcsfixer2:
+      config: .php_cs.dist
+      allow_risky: true
+    php_cs_auto_fixerv2:
+      config: .php_cs.dist
+      allow_risky: true
+      metadata:
+        priority: 300
+    git_commit_message:
+      enforce_capitalized_subject: false
+      type_scope_conventions:
+        - types:
+            - build
+            - ci
+            - chore
+            - docs
+            - feat
+            - fix
+            - perf
+            - refactor
+            - test
+        - scopes: []
+    phpstan: ~
+    phplint: ~
+    phpversion:
+      project: '7.4'
+  extensions:
+    - Wearejust\GrumPHPExtra\Extension\Loader

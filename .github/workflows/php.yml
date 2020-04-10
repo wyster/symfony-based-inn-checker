@@ -1,0 +1,17 @@
+name: PHP Composer
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress --no-suggest --no-scripts
+      
+    - name: Grumphp
+      run: cd .docker/tests && make up && docker-compose exec -T php ./vendor/bin/grumphp run --testsuite=ci
