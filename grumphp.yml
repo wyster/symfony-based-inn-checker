@@ -42,7 +42,8 @@ parameters:
             - refactor
             - test
         - scopes: []
-    phpstan: ~
+    phpstan:
+      ignore_patterns: [src/Migrations]
     phplint: ~
     phpversion:
       project: '7.4'
