@@ -25,3 +25,6 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 ADD ./start.sh /start.sh
 RUN chmod +x /start.sh
 CMD /start.sh
+
+ADD wait-for.sh /wait-for.sh
+RUN chmod 755 /wait-for.sh
