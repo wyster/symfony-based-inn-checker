@@ -30,18 +30,18 @@ parameters:
         priority: 300
     git_commit_message:
       enforce_capitalized_subject: false
-      type_scope_conventions:
-        - types:
-            - build
-            - ci
-            - chore
-            - docs
-            - feat
-            - fix
-            - perf
-            - refactor
-            - test
-        - scopes: []
+    type_scope_conventions:
+      - types:
+          - build
+          - ci
+          - chore
+          - docs
+          - feat
+          - fix
+          - perf
+          - refactor
+          - test
+      - scopes: []
     phpstan:
       ignore_patterns: [src/Migrations]
     phplint: ~

@@ -14,4 +14,4 @@ jobs:
       run: composer install --prefer-dist --no-progress --no-suggest --no-scripts
       
     - name: Grumphp
-      run: cd .docker/tests && make up && docker-compose exec -T php ./vendor/bin/grumphp run --testsuite=ci
+      run: cd .docker && make ci

@@ -1,0 +1,16 @@
+version: "3"
+services:
+  web:
+    container_name: symfony-based-inn-checker_web_testing
+    env_file:
+      - ".env.testing"
+  php:
+    container_name: symfony-based-inn-checker_php_testing
+    env_file:
+      - ".env.testing"
+  mysql:
+    container_name: symfony-based-inn-checker_mysql_testing
+    volumes:
+      - "./data/testing/mysql:/var/lib/mysql"
+    env_file:
+      - ".env.testing"

@@ -9,7 +9,9 @@ if [ $ENABLE_XDEBUG == "1" ]; then
     docker-php-ext-enable xdebug
 fi
 
-bash /wait-for.sh mysql:3306 -t 0 -- echo "Mysql started"
+echo $MYSQL_DATABASE
+
+bash /wait-for.sh --timeout=30 mysql:3306 -- echo "Mysql started"
 
 php ./bin/console doctrine:migrations:migrate --no-interaction
 

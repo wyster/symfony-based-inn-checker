@@ -37,7 +37,19 @@ setup:
 	@cp -n docker-compose.override.yml.dist docker-compose.override.yml
 
 tests: setup
-	@cd ./tests && make run
+	@docker-compose -p symfony-based-inn-checker_testing -f docker-compose.yml -f docker-compose.testing.yml up -d
+	@docker-compose -p symfony-based-inn-checker_testing exec -T web bash /wait-for.sh --timeout=30 localhost:80 -- echo "Webserver started"
+	@docker-compose -p symfony-based-inn-checker_testing exec -T php ./vendor/bin/codecept run
+	@docker-compose -p symfony-based-inn-checker_testing stop
 
 coverage: setup
-	@cd ./tests && make coverage
+	@docker-compose -p symfony-based-inn-checker_testing -f docker-compose.yml -f docker-compose.testing.yml up -d
+	@docker-compose -p symfony-based-inn-checker_testing exec -T web bash /wait-for.sh --timeout=30 localhost:80 -- echo "Webserver started"
+	@docker-compose -p symfony-based-inn-checker_testing exec -T php ./vendor/bin/codecept run --coverage --coverage-xml
+	@docker-compose -p symfony-based-inn-checker_testing stop
+
+ci: setup
+	@docker-compose -p symfony-based-inn-checker_testing -f docker-compose.yml -f docker-compose.testing.yml up -d
+	@docker-compose -p symfony-based-inn-checker_testing exec -T web bash /wait-for.sh --timeout=30 localhost:80 -- echo "Webserver started"
+	@docker-compose -p symfony-based-inn-checker_testing exec -T php ./vendor/bin/grumphp run --testsuite=ci
+	@docker-compose -p symfony-based-inn-checker_testing stop
