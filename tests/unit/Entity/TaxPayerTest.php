@@ -1,11 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Test;
+namespace Test\Entity;
 
 use App\Entity\TaxPayer;
 use Codeception\Test\Unit;
 use DateTime;
 use ReflectionProperty;
+use Test\UnitTester;
 
 final class TaxPayerTest extends Unit
 {
