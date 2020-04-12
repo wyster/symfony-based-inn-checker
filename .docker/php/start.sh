@@ -11,6 +11,7 @@ fi
 
 mkdir -p ./var
 chmod 0777 ./var -R
+chmod 0777 ./tests/_output -R
 
 bash /wait-for.sh --timeout=30 mysql:3306 -- echo "Mysql started"
 

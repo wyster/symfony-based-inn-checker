@@ -47,13 +47,4 @@ class IndexController extends AbstractController
             ]
         );
     }
-
-    /**
-     * @todo only for tests
-     * @Route("/c3/report/clear")
-     */
-    public function coverageReport(): Response
-    {
-        return new Response();
-    }
 }

@@ -4,6 +4,7 @@ namespace Test;
 
 use App\TaxPayer\Api;
 use Codeception\Test\Unit;
+use Exception;
 use Http\Mock\Client;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\RequestFactoryInterface;
@@ -20,35 +21,64 @@ final class ApiTest extends Unit
     public function testGetByInnIsValid(): void
     {
         $client = new Client();
-        $client->addResponse($this->createResponse(true));
-
-        $api = new Api(
-            $client,
-            $this->tester->grabService(RequestFactoryInterface::class),
-            $this->tester->grabService(StreamFactoryInterface::class),
-        );
-
+        $client->addResponse($this->createResponse(200, ['status' => true]));
+        $api = $this->createApiInstance($client);
         $result = $api->getByInn(self::VALID_INN);
         $this->assertTrue($result->isPayTaxes());
     }
 
-    public function testGetByInnIsInValid(): void
+    public function testGetByInnIsInvalid(): void
     {
         $client = new Client();
-        $client->addResponse($this->createResponse(true));
+        $client->addResponse($this->createResponse(200, ['status' => false]));
+        $api = $this->createApiInstance($client);
+        $result = $api->getByInn(self::INVALID_INN);
+        $this->assertFalse($result->isPayTaxes());
+    }
 
-        $api = new Api(
+    public function testGetByInnInvalidResponse(): void
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(500);
+        $client = new Client();
+        $client->addResponse($this->createResponse(500));
+        $api = $this->createApiInstance($client);
+        $api->getByInn(self::VALID_INN);
+    }
+
+    public function getByInnInvalidResponseBodyDataProvider(): array
+    {
+        return [
+            [[]],
+            [['status' => 'false']]
+        ];
+    }
+
+    /**
+     * @dataProvider getByInnInvalidResponseBodyDataProvider
+     * @param array $body
+     * @throws Exception
+     */
+    public function testGetByInnInvalidResponseBody(array $body): void
+    {
+        $this->expectException(Exception::class);
+        $client = new Client();
+        $client->addResponse($this->createResponse(200, $body));
+        $api = $this->createApiInstance($client);
+        $api->getByInn(self::VALID_INN);
+    }
+
+    private function createResponse(int $status, array $data = []): ResponseInterface
+    {
+        return new Response($status, [], json_encode($data, JSON_THROW_ON_ERROR));
+    }
+
+    private function createApiInstance(Client $client): Api
+    {
+        return new Api(
             $client,
             $this->tester->grabService(RequestFactoryInterface::class),
             $this->tester->grabService(StreamFactoryInterface::class),
         );
-
-        $result = $api->getByInn(self::VALID_INN);
-        $this->assertTrue($result->isPayTaxes());
-    }
-
-    private function createResponse(bool $status): ResponseInterface
-    {
-        return new Response(200, [], json_encode(['status' => $status], JSON_THROW_ON_ERROR));
     }
 }
