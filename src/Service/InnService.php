@@ -33,15 +33,14 @@ final class InnService implements InnServiceInterface
             return $row->isPays();
         }
 
-        $response = $this->api->getTaxpayerStatus($inn);
+        $response = $this->api->getByInn($inn);
 
         if ($row === null) {
             $row = new TaxPayerEntity();
             $row->setInn($inn);
         }
 
-        // @todo где гарантии что тут bool?
-        $row->setPays($response['status']);
+        $row->setPays($response->isPayTaxes());
 
         $this->entityManager->persist($row);
         $this->entityManager->flush();

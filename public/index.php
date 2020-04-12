@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 require dirname(__DIR__) . '/config/bootstrap.php';
 
 if ($_SERVER['APP_DEBUG']) {
+    error_reporting(-1);
+    ini_set('display_errors', 'on');
     umask(0000);
 
     Debug::enable();

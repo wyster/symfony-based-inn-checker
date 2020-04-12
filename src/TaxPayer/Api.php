@@ -22,7 +22,7 @@ final class Api implements ApiInterface
         $this->streamFactory = $streamFactory;
     }
 
-    public function getTaxpayerStatus(int $inn): array
+    public function getByInn(int $inn): TaxPayerEntityInterface
     {
         $request = $this->httpRequestFactory->createRequest('POST', self::URL);
         $params = [
@@ -39,8 +39,24 @@ final class Api implements ApiInterface
             throw new Exception('Invalid response', $response->getStatusCode());
         }
         $responseBody = $response->getBody()->__toString();
+        $result = json_decode($responseBody, true, 512, JSON_THROW_ON_ERROR);
 
-        // @todo check response fields and types
-        return json_decode($responseBody, true, 512, JSON_THROW_ON_ERROR);
+        $this->validateResponse($result);
+
+        $entity = new TaxPayerEntity();
+        $entity->setPayTaxes($result['status']);
+
+        return $entity;
+    }
+
+    private function validateResponse(array $data): void
+    {
+        if (!array_key_exists('status', $data)) {
+            throw new Exception('Status not exists in response data');
+        }
+
+        if (!is_bool($data['status'])) {
+            throw new Exception('Status have invalid type');
+        }
     }
 }

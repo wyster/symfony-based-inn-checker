@@ -4,5 +4,5 @@ namespace App\TaxPayer;
 
 interface ApiInterface
 {
-    public function getTaxpayerStatus(int $inn): array;
+    public function getByInn(int $inn): TaxPayerEntityInterface;
 }

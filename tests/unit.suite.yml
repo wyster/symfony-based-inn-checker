@@ -7,4 +7,10 @@ modules:
     enabled:
         - Asserts
         - \Test\Helper\Unit
+        - Symfony:
+            app_path: 'src'
+            environment: 'test'
+        - Doctrine2:
+            depends: Symfony
+            cleanup: true
     step_decorators: ~        

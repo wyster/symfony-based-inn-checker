@@ -9,7 +9,8 @@ if [ $ENABLE_XDEBUG == "1" ]; then
     docker-php-ext-enable xdebug
 fi
 
-echo $MYSQL_DATABASE
+mkdir -p ./var
+chmod 0777 ./var -R
 
 bash /wait-for.sh --timeout=30 mysql:3306 -- echo "Mysql started"
 

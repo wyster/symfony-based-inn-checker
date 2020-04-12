@@ -4,6 +4,8 @@ services:
     container_name: ${PROJECT_NAME}_web_testing
     env_file:
       - ".env.testing"
+    ports:
+      - 81:80
   php:
     container_name: ${PROJECT_NAME}_php_testing
     env_file:

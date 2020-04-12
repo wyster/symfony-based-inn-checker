@@ -63,23 +63,11 @@ class TaxPayer
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(DateTimeInterface $updatedAt): void
-    {
-        $this->updatedAt = $updatedAt;
-    }
-
     /**
      * @ORM\PrePersist
-     */
-    public function prePersist(): void
-    {
-        $this->updatedAt = new DateTime();
-    }
-
-    /**
      * @ORM\PreUpdate
      */
-    public function preUpdate(): void
+    public function prePersist(): void
     {
         $this->updatedAt = new DateTime();
     }

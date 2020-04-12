@@ -3,19 +3,15 @@
 namespace App\Controller;
 
 use App\Service\InnServiceInterface;
-use devsergeev\validators\InnValidator;
-use InvalidArgumentException;
+use App\Validator\InnValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Throwable;
-use function mb_strlen;
 
 class IndexController extends AbstractController
 {
-    private const INN_LENGTH = 12;
-
     /**
      * @Route("/", name="main")
      * @param Request $request
@@ -25,7 +21,23 @@ class IndexController extends AbstractController
     public function main(Request $request, InnServiceInterface $innService): Response
     {
         $inn = $request->get('inn', '');
-        $messages = $this->prepareResponse($request, $innService);
+
+        $messages = [];
+        $validator = new InnValidator();
+
+        if (!$validator->isValid($inn)) {
+            $messages = $validator->getMessages();
+        }
+
+        if ($validator->isValid($inn)) {
+            try {
+                $isTaxPayer = $innService->isTaxPayer((int)$inn);
+                $messages[] = $isTaxPayer ? 'ИНН является самозанятым' : 'ИНН не является самозанятым';
+            } catch (Throwable $e) {
+                $message = sprintf('Возникла ошибка, попробуйте повторить попытку, код: %s', $e->getCode());
+                $messages[] = $message;
+            }
+        }
 
         return $this->render(
             'main.html.twig',
@@ -36,39 +48,12 @@ class IndexController extends AbstractController
         );
     }
 
-    private function prepareResponse(Request $request, InnServiceInterface $innService): array
+    /**
+     * @todo only for tests
+     * @Route("/c3/report/clear")
+     */
+    public function coverageReport(): Response
     {
-        $inn = $request->get('inn', '');
-        $messages = $this->innValidator($inn);
-        if (count($messages) > 0) {
-            return $messages;
-        }
-
-        $inn = (int)$inn;
-        try {
-            $isTaxPayer = $innService->isTaxPayer($inn);
-            $messages[] = $isTaxPayer ? 'ИНН является самозанятым' : 'ИНН не является самозанятым';
-        } catch (Throwable $e) {
-            $message = sprintf('Возникла ошибка, попробуйте повторить попытку, код: %s', $e->getCode());
-            $messages[] = $message;
-        }
-
-        return $messages;
-    }
-
-    private function innValidator(string $inn): array
-    {
-        if (mb_strlen($inn) !== self::INN_LENGTH) {
-            return [sprintf('ИНН физического лица должен состоять из %s цифр', self::INN_LENGTH)];
-        }
-
-        $messages = [];
-        try {
-            InnValidator::check($inn);
-        } catch (InvalidArgumentException $e) {
-            $messages[] = $e->getMessage();
-        }
-
-        return $messages;
+        return new Response();
     }
 }

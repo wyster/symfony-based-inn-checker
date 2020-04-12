@@ -4,12 +4,7 @@ namespace Test;
 
 class ExampleCest
 {
-    public function _before(AcceptanceTester $I)
-    {
-    }
-
-    // tests
-    public function tryToTest(AcceptanceTester $I)
+    public function tryToTest(AcceptanceTester $I): void
     {
         $I->amOnPage('/');
         $I->seeResponseCodeIs(200);
