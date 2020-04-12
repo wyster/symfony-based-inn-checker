@@ -3,7 +3,6 @@ parameters:
     ci:
       tasks:
         - phpcsfixer2
-        - codeception
         - securitychecker
         - phpstan
         - phplint
@@ -16,7 +15,8 @@ parameters:
         - php_cs_auto_fixerv2
         - phplint
   tasks:
-    codeception: ~
+    codeception:
+      fail_fast: true
     securitychecker:
       metadata:
         blocking: false
