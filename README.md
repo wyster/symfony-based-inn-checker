@@ -1,3 +1,5 @@
+[codecov](https://codecov.io/gh/wyster/symfony-based-inn-checker/branch/master/graph/badge.svg)](https://codecov.io/gh/wyster/symfony-based-inn-checker)
+
 # Запуск проекта
 
 Проект можно запустить через docker-compose, для этого нужно
