@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\TaxPayer as TaxPayerEntity;
+use App\InnNumber\InnNumberInterface;
 use App\TaxPayer;
 use App\Repository\TaxPayerRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,7 +22,7 @@ final class InnService implements InnServiceInterface
         $this->api = $api;
     }
 
-    public function isTaxPayer(int $inn): bool
+    public function isTaxPayer(InnNumberInterface $inn): bool
     {
         /**
          * @var TaxPayerRepository $taxPayerRepository

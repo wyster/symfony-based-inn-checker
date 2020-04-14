@@ -11,7 +11,7 @@ final class InnValidator
 
     private array $messages = [];
 
-    public function isValid(string $value): bool
+    public function isValid(int $value): bool
     {
         $this->messages = [];
 

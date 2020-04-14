@@ -2,7 +2,9 @@
 
 namespace App\TaxPayer;
 
+use App\InnNumber\InnNumberInterface;
+
 interface ApiInterface
 {
-    public function getByInn(int $inn): TaxPayerEntityInterface;
+    public function getByInn(InnNumberInterface $innNumber): TaxPayerEntityInterface;
 }

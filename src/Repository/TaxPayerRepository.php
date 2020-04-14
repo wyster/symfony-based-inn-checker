@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\TaxPayer;
+use App\InnNumber\InnNumberInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,7 +20,7 @@ class TaxPayerRepository extends ServiceEntityRepository
         parent::__construct($registry, TaxPayer::class);
     }
 
-    public function getByInn(int $value): ?TaxPayer
+    public function getByInn(InnNumberInterface $value): ?TaxPayer
     {
         return $this->createQueryBuilder('i')
             ->andWhere('i.inn = :val')
