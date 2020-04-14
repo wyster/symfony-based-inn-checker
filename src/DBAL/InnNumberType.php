@@ -19,8 +19,6 @@ class InnNumberType extends Type
 
     public function convertToPHPValue($value, AbstractPlatform $platform): InnNumberInterface
     {
-        var_dump($value);
-        die;
         return new InnNumber((int)$value);
     }
 

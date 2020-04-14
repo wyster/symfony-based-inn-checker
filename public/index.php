@@ -9,7 +9,6 @@ require dirname(__DIR__) . '/config/bootstrap.php';
 if ($_SERVER['APP_ENV'] === 'test') {
     define('C3_CODECOVERAGE_ERROR_LOG_FILE', __DIR__ . '/../var/c3_error.log');
     require __DIR__ . '/../c3.php';
-    define('MY_APP_STARTED', true);
 }
 
 if ($_SERVER['APP_DEBUG']) {

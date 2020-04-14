@@ -2,6 +2,7 @@
 
 namespace Test;
 
+use App\InnNumber\InnNumber;
 use App\Service\InnService;
 use App\Service\InnServiceInterface;
 use App\TaxPayer\ApiInterface;
@@ -25,7 +26,7 @@ final class InnServiceTest extends Unit
 
         $innService = $this->createInnService($apiMock);
 
-        $this->assertFalse($innService->isTaxPayer(self::INVALID_INN));
+        $this->assertFalse($innService->isTaxPayer(new InnNumber(self::VALID_INN)));
     }
 
     public function testIsTaxPayer(): void
@@ -36,12 +37,13 @@ final class InnServiceTest extends Unit
         $apiMock->expects($this->once())->method('getByInn')->willReturn($taxPayer);
 
         $innService = $this->createInnService($apiMock);
+        $innNumber = new InnNumber(self::VALID_INN);
 
         // Получение из апи
-        $this->assertTrue($innService->isTaxPayer(self::VALID_INN));
+        $this->assertTrue($innService->isTaxPayer($innNumber));
 
         // Получение из базы
-        $this->assertTrue($innService->isTaxPayer(self::VALID_INN));
+        $this->assertTrue($innService->isTaxPayer($innNumber));
     }
 
     private function createInnService(ApiInterface $apiMock): InnServiceInterface

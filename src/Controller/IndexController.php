@@ -26,11 +26,7 @@ class IndexController extends AbstractController
         $messages = [];
         $validator = new InnValidator();
 
-        if (!$validator->isValid($inn)) {
-            $messages = $validator->getMessages();
-        }
-
-        if ($validator->isValid($inn)) {
+        if ($validator->isValid((int)$inn)) {
             try {
                 $isTaxPayer = $innService->isTaxPayer(new InnNumber((int)$inn));
                 $messages[] = $isTaxPayer ? 'ИНН является самозанятым' : 'ИНН не является самозанятым';
@@ -38,6 +34,8 @@ class IndexController extends AbstractController
                 $message = sprintf('Возникла ошибка, попробуйте повторить попытку, код: %s', $e->getCode());
                 $messages[] = $message;
             }
+        } else {
+            $messages = $validator->getMessages();
         }
 
         return $this->render(

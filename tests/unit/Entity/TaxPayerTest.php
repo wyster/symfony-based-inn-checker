@@ -3,6 +3,7 @@
 namespace Test\Entity;
 
 use App\Entity\TaxPayer;
+use App\InnNumber\InnNumber;
 use Codeception\Test\Unit;
 use DateTime;
 use ReflectionProperty;
@@ -10,6 +11,8 @@ use Test\UnitTester;
 
 final class TaxPayerTest extends Unit
 {
+    private const VALID_INN = 366221019350;
+
     protected UnitTester $tester;
 
     public function testSetGetId(): void
@@ -35,7 +38,7 @@ final class TaxPayerTest extends Unit
 
     public function testSetGetInn(): void
     {
-        $value = 366221019350;
+        $value = new InnNumber(self::VALID_INN);
         $entity = new TaxPayer();
         $prop = new ReflectionProperty($entity, 'inn');
         $prop->setAccessible(true);

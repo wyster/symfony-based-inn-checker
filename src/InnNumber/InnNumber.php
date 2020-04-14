@@ -11,7 +11,7 @@ final class InnNumber implements InnNumberInterface
 
     public function __construct(int $inn)
     {
-        if ((new InnValidator())->isValid($inn)) {
+        if (!(new InnValidator())->isValid($inn)) {
             throw new InvalidArgumentException('Invalid inn');
         }
 

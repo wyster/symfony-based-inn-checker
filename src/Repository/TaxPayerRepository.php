@@ -24,7 +24,7 @@ class TaxPayerRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('i')
             ->andWhere('i.inn = :val')
-            ->setParameter('val', $value)
+            ->setParameter('val', $value->getInn())
             ->getQuery()
             ->getOneOrNullResult();
     }
