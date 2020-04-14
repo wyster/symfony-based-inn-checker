@@ -2,6 +2,7 @@
 
 namespace App\TaxPayer;
 
+use App\InnNumber\InnNumberInterface;
 use Exception;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
@@ -22,11 +23,11 @@ final class Api implements ApiInterface
         $this->streamFactory = $streamFactory;
     }
 
-    public function getByInn(int $inn): TaxPayerEntityInterface
+    public function getByInn(InnNumberInterface $innNumber): TaxPayerEntityInterface
     {
         $request = $this->httpRequestFactory->createRequest('POST', self::URL);
         $params = [
-            'inn' => $inn,
+            'inn' => $innNumber->getInn(),
             'requestDate' => date('Y-m-d')
         ];
 

@@ -7,8 +7,8 @@ use Codeception\Test\Unit;
 
 final class InnValidatorTest extends Unit
 {
-    private const VALID_INN = '366221019350';
-    private const INVALID_INN = '366221019361';
+    private const VALID_INN = 366221019350;
+    private const INVALID_INN = 366221019361;
 
     protected UnitTester $tester;
 
@@ -16,17 +16,16 @@ final class InnValidatorTest extends Unit
     {
         return [
             [self::VALID_INN, true],
-            [self::INVALID_INN, false],
-            ['', false]
+            [self::INVALID_INN, false]
         ];
     }
 
     /**
      * @dataProvider isValidProvider
-     * @param string $value
+     * @param int $value
      * @param bool $expected
      */
-    public function testIsValid(string $value, bool $expected): void
+    public function testIsValid(int $value, bool $expected): void
     {
         $validator = new InnValidator();
         $this->assertSame($expected, $validator->isValid($value));

@@ -11,17 +11,17 @@ final class InnValidator
 
     private array $messages = [];
 
-    public function isValid(string $value): bool
+    public function isValid(int $value): bool
     {
         $this->messages = [];
 
-        if (mb_strlen($value) !== self::INN_LENGTH) {
+        if (mb_strlen((string)$value) !== self::INN_LENGTH) {
             $this->messages[] = sprintf('ИНН физического лица должен состоять из %s цифр', self::INN_LENGTH);
             return false;
         }
 
         try {
-            InnChecker::check($value);
+            InnChecker::check((string)$value);
         } catch (InvalidArgumentException $e) {
             $this->messages[] = $e->getMessage();
             return false;

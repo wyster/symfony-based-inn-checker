@@ -38,7 +38,7 @@ class InnFormCest
 
     public function tryToTestWithExceptionInInnService(FunctionalTester $I): void
     {
-        $mock = Stub::makeEmpty(InnServiceInterface::class, ['isTaxPayer' => function () {
+        $mock = Stub::makeEmpty(InnServiceInterface::class, ['isTaxPayer' => static function () {
             throw new Exception('');
         }]);
         $I->grabService(ContainerInterface::class)->set(InnService::class, $mock);

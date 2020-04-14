@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\InnNumber\InnNumber;
 use App\Service\InnServiceInterface;
 use App\Validator\InnValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,18 +26,16 @@ class IndexController extends AbstractController
         $messages = [];
         $validator = new InnValidator();
 
-        if (!$validator->isValid($inn)) {
-            $messages = $validator->getMessages();
-        }
-
-        if ($validator->isValid($inn)) {
+        if ($validator->isValid((int)$inn)) {
             try {
-                $isTaxPayer = $innService->isTaxPayer((int)$inn);
+                $isTaxPayer = $innService->isTaxPayer(new InnNumber((int)$inn));
                 $messages[] = $isTaxPayer ? 'ИНН является самозанятым' : 'ИНН не является самозанятым';
             } catch (Throwable $e) {
                 $message = sprintf('Возникла ошибка, попробуйте повторить попытку, код: %s', $e->getCode());
                 $messages[] = $message;
             }
+        } else {
+            $messages = $validator->getMessages();
         }
 
         return $this->render(

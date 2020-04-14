@@ -2,6 +2,7 @@
 
 namespace Test;
 
+use App\InnNumber\InnNumber;
 use App\TaxPayer\Api;
 use Codeception\Test\Unit;
 use Exception;
@@ -23,7 +24,7 @@ final class ApiTest extends Unit
         $client = new Client();
         $client->addResponse($this->createResponse(200, ['status' => true]));
         $api = $this->createApiInstance($client);
-        $result = $api->getByInn(self::VALID_INN);
+        $result = $api->getByInn(new InnNumber(self::VALID_INN));
         $this->assertTrue($result->isPayTaxes());
     }
 
@@ -32,7 +33,7 @@ final class ApiTest extends Unit
         $client = new Client();
         $client->addResponse($this->createResponse(200, ['status' => false]));
         $api = $this->createApiInstance($client);
-        $result = $api->getByInn(self::INVALID_INN);
+        $result = $api->getByInn(new InnNumber(self::VALID_INN));
         $this->assertFalse($result->isPayTaxes());
     }
 
@@ -43,7 +44,7 @@ final class ApiTest extends Unit
         $client = new Client();
         $client->addResponse($this->createResponse(500));
         $api = $this->createApiInstance($client);
-        $api->getByInn(self::VALID_INN);
+        $api->getByInn(new InnNumber(self::VALID_INN));
     }
 
     public function getByInnInvalidResponseBodyDataProvider(): array
@@ -65,7 +66,7 @@ final class ApiTest extends Unit
         $client = new Client();
         $client->addResponse($this->createResponse(200, $body));
         $api = $this->createApiInstance($client);
-        $api->getByInn(self::VALID_INN);
+        $api->getByInn(new InnNumber(self::VALID_INN));
     }
 
     private function createResponse(int $status, array $data = []): ResponseInterface

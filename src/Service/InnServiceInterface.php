@@ -2,7 +2,9 @@
 
 namespace App\Service;
 
+use App\InnNumber\InnNumberInterface;
+
 interface InnServiceInterface
 {
-    public function isTaxPayer(int $inn): bool;
+    public function isTaxPayer(InnNumberInterface $inn): bool;
 }

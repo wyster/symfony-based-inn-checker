@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\InnNumber\InnNumberInterface;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -20,9 +21,9 @@ class TaxPayer
      */
     private ?int $id = null;
     /**
-     * @ORM\Column(type="bigint", unique=true)
+     * @ORM\Column(type="innNumber", unique=true)
      */
-    private int $inn;
+    private InnNumberInterface $inn;
     /**
      * @ORM\Column(type="integer", length=1)
      */
@@ -37,12 +38,12 @@ class TaxPayer
         return $this->id;
     }
 
-    public function getInn(): int
+    public function getInn(): InnNumberInterface
     {
         return $this->inn;
     }
 
-    public function setInn(int $inn): void
+    public function setInn(InnNumberInterface $inn): void
     {
         $this->inn = $inn;
     }
