@@ -1,4 +1,4 @@
-[![Codecov branch](https://img.shields.io/codecov/c/github/wyster/symfony-based-inn-checker/master)](https://codecov.io/gh/wyster/symfony-based-inn-checker)
+[![codecov](https://codecov.io/gh/wyster/symfony-based-inn-checker/branch/master/graph/badge.svg)](https://codecov.io/gh/wyster/symfony-based-inn-checker)
 
 # Запуск проекта
 
